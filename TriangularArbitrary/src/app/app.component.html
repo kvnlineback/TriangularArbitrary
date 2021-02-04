@@ -1,0 +1,80 @@
+<div class="container-fluid color-lively-grey min-width-1000 h-75 m-0 max-width-100">
+  <!-- Header -->
+  <div class="row">
+    <div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+      <!-- Page Title -->
+      <div class="navbar-header m-2">
+        <a (click)="handleTitleClick()" class="navbar-brand ml-5"><h1 class="text-color-jet">Tri<b>angular</b> Arbitrary</h1></a>
+      </div>
+    </div>
+
+    <!-- User Greeting -->
+    <div class="col-4 col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 float-right">
+      <div class="text-color-lively-darkgreen float-right m-3 pt-2 pr-4">
+        <div *ngIf='account.isAuthenticated'>
+          <span>Welcome, </span>
+          <button class="btn btn-link" (click)="accountUpdateClicked()">{{ account.firstName + ' ' + account.lastName }}
+          <div *ngIf='showImage' class="d-flex justify-content-center"><img [src]='account.photo' class='img-circle'></div></button>
+          <br/>
+          <!--route this link to the account service to log out user-->
+          <a (click)="signOut()" class="float-right">Sign Out</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Login Component -->
+<div *ngIf='!account.isAuthenticated && !accountCreationClicked' class="container-fluid min-width-1000 max-width-100 h-100 w-100 mx-auto">
+  <router-outlet></router-outlet>
+</div>
+
+<!-- Left Navigation and Main Content-->
+<div *ngIf='account.isAuthenticated && !accountCreationClicked' class="container-fluid max-width-100 w-100 h-100">
+  <div class="row">
+
+    <!-- Navigation-->
+    <div style="min-width: 200px;" class="col-1 col-sm-1 col-m-1 col-lg-1 col-xl-1 rounded">
+      <nav class="nav navbar">
+        <ul class="nav navbar-nav">
+          <div class="row">
+            <li class="btn w-100 nav-item"><a class="nav-link text-color-jet" routerLink="favorites" routerLinkActive="active"><b>FAVORITES</b> </a></li>
+          </div>
+          <hr class="color-jet">
+          <div class="row">
+            <li class="btn w-100 nav-item"><a class="nav-link text-color-jet" routerLink="top-ten" routerLinkActive="active"><b>TOP 10</b> </a></li>
+          </div>
+          <hr>
+          <div class="row">
+            <li class="btn w-100 nav-item "><a class="nav-link text-color-jet" routerLink="search" routerLinkActive="active"><b>SEARCH</b> </a></li>
+          </div>
+          <hr>
+          <div class="row">
+            <li class="btn w-100 nav-item "><a class="nav-link text-color-jet" routerLink="conversion" routerLinkActive="active"><b>CONVERSIONS</b> </a></li>
+          </div>
+          <hr>
+            <div class="row">
+            <li class="btn w-100 nav-item "><a class="nav-link text-color-jet" routerLink="create-ticket" routerLinkActive="active"><b>CREATE TICKET</b> </a></li>
+          </div>
+          <hr>
+          <div class="row" *ngIf='account.isAuthenticated && account.accountType === "Administrator"'>
+            <li class="btn w-100 nav-item "><a class="nav-link text-color-jet" routerLink="admin" routerLinkActive="active"><b>ACCOUNT ADMINISTRATION</b> </a></li>
+          </div>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div style="width: calc(100%-200px); min-height:700px; max-height:700px;" class="col shadow-lg rounded overflow-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+    <!-- FOOTER -->
+    <div class="row d-flex fixed-bottom justify-content-center bg-color-lively-grey app-footer-text">
+        <ul style="list-style: none;" class="">
+          <li>
+            <p class="text-color-lively-darkgreen justify-content-center">CSC436 Web Development Group 6</p>
+          </li>
+        </ul>
+    </div>
+  </div>
+</div>

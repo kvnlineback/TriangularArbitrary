@@ -1,0 +1,92 @@
+<div>
+  <div class="fluid-container md-form m-5 h-75 w-90 align-self-center">
+      <h1><b>Account Administration</b></h1>
+      <hr>
+    <div class="row">
+      <div class="col" style="min-width: 525px">
+          <h2 class="float-left mr-3">Support Tickets</h2>
+          <!-- loading spinner while ticket is submitting to firebase just in case it takes any amount of time -->
+          <div *ngIf="ticketTableisBusy" class="spinner-border spinner-sm text-info float-left" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-sm fixed-table-header">
+              <thead class="thead-light">
+                <tr>
+                  <th>Subject</th>
+                  <th>Type</th>
+                  <th>Severity</th>
+                  <th>Description</th>
+                  <th>User</th>
+                  <th></th>
+                </tr>
+              </thead>
+            <tbody>
+                <tr *ngFor="let ticket of tickets; let i = index">
+                  <td>{{ticket.subject}}</td>
+                  <td>{{ticket.type}}</td>
+                  <td>{{ticket.severity}}</td>
+                  <td>{{ticket.ticketReason}}</td>
+                  <td>{{ticket.user}}</td>
+                  <td><button class="btn btn-success" (click)="openResolveModal(content, i)">Resolve</button></td>
+                </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+        <div class="col float-left" style="min-width: 525px">
+          <h2 class="float-left mr-3">Accounts</h2>
+          <!-- loading spinner while ticket is submitting to firebase just in case it takes any amount of time -->
+          <div *ngIf="accountTableIsBusy" class="spinner-border spinner-sm text-info float-left" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover table-sm">
+              <thead class="thead-light">
+              <th>User ID</th>
+              <th>Name</th>
+              <th></th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users; let i = index">
+                  <td>{{user.email}}</td>
+                  <td>{{user.firstName}} {{user.lastName}}</td>
+                  <td><button class="btn btn-danger" (click)="removeUser(i)">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Ticket Resolution Description</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <div class="input-group">
+          <textarea
+            required
+            id="resolveReason"
+            name="resolveReason"
+            class="md-textarea form-control"
+            cols="10" rows="3"
+            placeholder="Please enter the steps for resolution..."
+            maxlength="250"
+            [(ngModel)]="resolveReason"
+            #reason="ngModel"></textarea>
+          </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+  </div>
+</ng-template>

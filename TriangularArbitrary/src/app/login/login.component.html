@@ -1,0 +1,61 @@
+<form #loginForm="ngForm"
+(ngSubmit)="loginForm.form.valid && signInWithEmail()"
+>
+  <div class="fluid-container md-form w-90 align-self-center">
+
+      <!-- style="border: 1px solid black" -->
+      <div class="row" >
+          <div class="col">
+          </div>
+
+          <div class="col" style="background: white; padding-top: 2%;">
+                <h2>Sign In</h2>
+                or <a class="btn btn-link" (click)="createAccountClicked()">create an account</a>
+                <br/>
+                <br/>
+
+                <input required type="email" name="email" placeholder="Email" class="form-control"
+                [(ngModel)]='model.email' #email="ngModel"
+                [ngClass]="{'is-invalid': loginForm.submitted && email.invalid}"
+                email/>
+                <div *ngIf="loginForm.submitted && email.invalid" class="invalid-feedback">
+                  <div *ngIf="email.errors.required">Email is required</div>
+                    <div *ngIf="email.errors.email">Must be a valid email address</div>
+                </div>
+
+                <br/>
+                <input required type="password" name="password" placeholder="Password" class="form-control"
+                [(ngModel)]='model.secret' #password="ngModel"
+                [ngClass]="{'is-invalid': loginForm.submitted && password.invalid}"
+                password/>
+                <div *ngIf="loginForm.submitted && password.invalid" class="invalid-feedback">
+                  <div *ngIf="password.errors.required">Password is required</div>
+                </div>
+
+                <br/>
+                <!-- (click)="signInWithEmail()" -->
+                <button
+                  type="submit"
+                  class="btn btn-primary form-control"
+                  style="background-color: #7043F5; "
+
+                >Sign In</button>
+                <br/><br/>
+                <a
+                  class="btn btn-primary form-control"
+                  style="background-color: white; border:#7043F5 1px solid; color: #7043F5; "
+                  (click)="signInWithGoogle()"
+                >
+                <img src="assets/g-fakeonly.png" />Sign in with Google</a>
+
+                <br/><br/>
+
+          </div>
+
+          <div class="col float-left" >
+          </div>
+      </div>
+      <router-outlet></router-outlet>
+  </div>
+  </form>
+

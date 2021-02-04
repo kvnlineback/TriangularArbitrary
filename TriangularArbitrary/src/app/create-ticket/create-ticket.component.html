@@ -1,0 +1,134 @@
+<!-- Form for submitting a ticket to support for the App -->
+<form #ticketForm="ngForm" (ngSubmit)="SubmitTicketFirebase(ticketForm)">
+  <div class="fluid-container md-form m-5 form-group">
+      <h1><b>Create Ticket</b></h1>
+      <hr>
+      <div *ngIf="!isBusy && !formSubmitted" class="row">
+          <div class="col">
+              <div class="input-group w-50">
+                  <input
+                    required
+                    name="subject"
+                    id="subject"
+                    type="text"
+                    placeholder="Enter Subject..."
+                    class="form-control w-100"
+                    maxlength="30"
+                    [(ngModel)]="model.subject"
+                    #subject="ngModel">
+              </div>
+              <div *ngIf="subject.invalid && (subject.dirty || subject.touched)" class="text-color-red ml-3">
+                <div *ngIf="subject.errors.required">
+                  Subject is required.
+                </div>
+            </div>
+          </div>
+      </div>
+      <br>
+      <div *ngIf="!isBusy && !formSubmitted" class="row">
+        <div class="col-6">
+          <select
+            required
+            name="type"
+            id="type"
+            class="custom-select form-control w-100 mr-2"
+            [(ngModel)]="model.type"
+            #type="ngModel">
+              <option [ngValue]="undefined" hidden>Select Ticket Type...</option>
+              <option *ngFor="let type of this.enumKeys(ticketTypes)" [ngValue]="type">{{ ticketTypes[type] }}</option>
+          </select>
+          <div *ngIf="type.invalid && (type.dirty || type.touched)" class="text-color-red ml-3">
+            <div *ngIf="type.errors.required">
+              Ticket Type is required.
+            </div>
+          </div>
+        </div>
+          <div class="col-6">
+            <select
+              required
+              name="severity"
+              id="severity"
+              class="custom-select form-control w-100"
+              [(ngModel)]="model.severity"
+              #severity="ngModel">
+              <option [ngValue]="undefined" hidden>Select Severity...</option>
+              <option *ngFor="let severity of this.enumKeys(severityTypes)" [ngValue]="severity">{{ severityTypes[severity] }}</option>
+            </select>
+            <div *ngIf="severity.invalid && (severity.dirty || severity.touched)" class="text-color-red ml-3">
+              <div *ngIf="type.errors.required">
+                Severity Level is required.
+              </div>
+            </div>
+          </div>
+      </div>
+      <br>
+      <div *ngIf="!isBusy && !formSubmitted" class="row m-1">
+          <textarea
+            required
+            id="ticketReason"
+            name="ticketReason"
+            class="md-textarea form-control"
+            cols="10" rows="3"
+            placeholder="Please enter the reason for your ticket..."
+            maxlength="250"
+            [(ngModel)]="model.ticketReason"
+            #reason="ngModel"></textarea>
+          <div *ngIf="reason.invalid && (reason.dirty || reason.touched)" class="text-color-red ml-3">
+            <div *ngIf="reason.errors.required">
+              Ticket Reason is required.
+            </div>
+          </div>
+      </div>
+      <br>
+      <div *ngIf="!isBusy && !formSubmitted" class="row float-right mr-2">
+          <button
+            class="btn bg-color-lively-darkgreen text-white"
+            type="submit"
+            [disabled]="(model.subject === undefined || model.type === undefined || model.severity === undefined || model.ticketReason === undefined )"
+            >Submit Ticket</button>
+      </div>
+      <br>
+      <div class="row" *ngIf="!isBusy && formSubmitted">
+        <div class="d-flex align-content-center l-25 w-50 h-50 alert bg-color-lively-darkgreen text-white">Thank you for your submission. We apologize for any inconvenience you are experiencing. We will get back to you as soon as possible!</div>
+      </div>
+
+      <!-- loading spinner while ticket is submitting to firebase just in case it takes any amount of time -->
+      <div class="row">
+        <div class="col l-50">
+          <div *ngIf="isBusy" class="spinner-border spinner-lg text-info" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+  </div>
+</form>
+
+
+
+<!-- Debugging the list of Tickets in LocalStorage -->
+<!-- <div class="container-fluid">
+  <div class="row">
+    <h2>Form Errors</h2>
+    <hr>
+    <pre>{{  ticketForm.errors | json }}</pre>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <h2>Current Create Ticket Model</h2>
+      <hr>
+      <pre>{{model | json}}</pre>
+    </div>
+    <div class="col">
+    <div>
+      <h2>Current array of Tickets in LocalStorage</h2>
+      <hr>
+      <ul>
+        <li *ngFor="let ticket of Tickets">{{ticket.subject}}: {{ticket.type}} | {{ticket.severity}} | {{ticket.ticketReason}}</li>
+      </ul>
+    </div>
+    </div>
+  </div>
+</div> -->
+
+
